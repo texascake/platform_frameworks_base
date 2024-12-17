@@ -105,6 +105,7 @@ import com.android.server.compat.PlatformCompatNative;
 import com.android.server.connectivity.IpConnectivityMetrics;
 import com.android.server.contentcapture.ContentCaptureManagerInternal;
 import com.android.server.coverage.CoverageService;
+import com.android.server.custom.AttestationService;
 import com.android.server.devicepolicy.DevicePolicyManagerService;
 import com.android.server.display.AutoAODService;
 import com.android.server.display.DisplayManagerService;
@@ -2043,6 +2044,11 @@ public final class SystemServer {
                 t.traceBegin("StartPocketBridgeService");
                 mSystemServiceManager.startService(PocketBridgeService.class);
                 t.traceEnd();
+
+            // AttestationService
+            t.traceBegin("AttestationService");
+            mSystemServiceManager.startService(AttestationService.class);
+            t.traceEnd();
             }
 
             // LiveDisplay
