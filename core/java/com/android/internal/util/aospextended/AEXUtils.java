@@ -254,23 +254,31 @@ public class AEXUtils {
     }
 
     // Check to see if a package is installed
-    public static boolean isPackageInstalled(Context context, String pkg, boolean ignoreState) {
-        if (pkg != null) {
+    public static boolean isPackageInstalled(Context context, String packageName, boolean ignoreState) {
+        if (packageName != null) {
             try {
-                PackageInfo pi = context.getPackageManager().getPackageInfo(pkg, 0);
+                PackageInfo pi = context.getPackageManager().getPackageInfo(packageName, 0);
                 if (!pi.applicationInfo.enabled && !ignoreState) {
                     return false;
                 }
-            } catch (NameNotFoundException e) {
+            } catch (PackageManager.NameNotFoundException e) {
                 return false;
             }
         }
-
         return true;
     }
 
-    public static boolean isPackageInstalled(Context context, String pkg) {
-        return isPackageInstalled(context, pkg, true);
+    public static boolean isPackageInstalled(Context context, String packageName) {
+        return isPackageInstalled(context, packageName, true);
+    }
+
+    public static boolean isPackageEnabled(Context context, String packageName) {
+        try {
+            PackageInfo pi = context.getPackageManager().getPackageInfo(packageName, 0);
+            return pi.applicationInfo.enabled;
+        } catch (PackageManager.NameNotFoundException notFound) {
+            return false;
+        }
     }
 
     // Check if device has a notch
@@ -347,33 +355,6 @@ public class AEXUtils {
         public List<OverlayInfo> getOverlayInfosForTarget(String target, int userId)
                 throws RemoteException {
             return mService.getOverlayInfosForTarget(target, userId);
-        }
-    }
-
-    public static boolean isPackageInstalled(Context context, String packageName, boolean ignoreState) {
-        if (packageName != null) {
-            try {
-                PackageInfo pi = context.getPackageManager().getPackageInfo(packageName, 0);
-                if (!pi.applicationInfo.enabled && !ignoreState) {
-                    return false;
-                }
-            } catch (PackageManager.NameNotFoundException e) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isPackageInstalled(Context context, String packageName) {
-        return isPackageInstalled(context, packageName, true);
-    }
-
-    public static boolean isPackageEnabled(Context context, String packageName) {
-        try {
-            PackageInfo pi = context.getPackageManager().getPackageInfo(packageName, 0);
-            return pi.applicationInfo.enabled;
-        } catch (PackageManager.NameNotFoundException notFound) {
-            return false;
         }
     }
 }
